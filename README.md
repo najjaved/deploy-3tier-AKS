@@ -36,10 +36,10 @@ Users access the frontend (Nginx) via an Ingress → the frontend calls the API 
 ```
 az aks create \
   --resource-group <resource-group-name> \
-  --name najAKSCluster \
+  --name <cluster-name> \
   --node-count 2 \
-  --node-vm-size Standard_DS2_v2 \
-  --kubernetes-version 1.24.9 \
+  --node-vm-size <Standard_DS2_v2> \
+  --kubernetes-version <1.24.9> \
   --enable-addons monitoring \
   --enable-managed-identity
 ```
