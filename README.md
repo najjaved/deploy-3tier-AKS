@@ -23,6 +23,53 @@
 ## Flow
 Users access the frontend (Nginx) via an Ingress → the frontend calls the API service via an internal ClusterIP → the API connects to PostgreSQL.
 
+---
+
+### Create an AKS Cluster using Azure CLI
+0. Create the Resource Group:
+```az group create --name <resource-group-name> --location <azure-region>```
+
+1. check for supported versions:
+```az aks get-versions --location <azure-region> --output table```
+
+2. create
+```
+az aks create \
+  --resource-group <resource-group-name> \
+  --name najAKSCluster \
+  --node-count 2 \
+  --node-vm-size Standard_DS2_v2 \
+  --kubernetes-version 1.24.9 \
+  --enable-addons monitoring \
+  --enable-managed-identity
+```
+3. verify:
+```az aks list -o table```
+
+### Connect to Your AKS Cluster
+1. Get Credentials:
+```az aks get-credentials --resource-group <resource-group-name> --name <cluster-name> ```
+</br>
+(This command merges your AKS cluster credentials into your local kubeconfig file)
+
+2. Verify your context with:
+```kubectl config get-contexts```
+3. Test Connectivity:
+```kubectl get nodes```
+
+You should see 2 nodes in a Ready state if everything is functioning correctly
+### Cleanup
+1. Remove the Resource Group:
+```az group delete --name <resource-group-name> --yes --no-wait```
+
+This deletes all resources in the group, including the AKS cluster and related resources.
+The --no-wait parameter returns you to the console immediately while deletion continues in the background.
+
+2. Verify Deletion:
+```az group list --output table```
+
+
+
 
 
 
