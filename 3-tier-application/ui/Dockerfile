@@ -1,3 +1,4 @@
+# Define the UI (Nginx) Image
 FROM nginx:alpine
 
 # We'll need 'sed' for the runtime substitution

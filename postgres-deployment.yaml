@@ -1,0 +1,48 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres-container
+        image: postgres:15 # use the official postgres:15 image from Docker Hub
+        env:
+        - name: POSTGRES_DB
+          value: "basic3tier"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "admin123"  # do NOT use in production
+        - name: PGDATA
+          value: /var/lib/postgresql/data/postgresdata # Specify the subdirectory for PostgreSQL
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data  # Mount the entire volume here
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-3tier-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-3tier-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: default
