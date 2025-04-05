@@ -49,7 +49,6 @@ az aks create \
 ### Connect to Your AKS Cluster
 1. Get Credentials:
 ```az aks get-credentials --resource-group <resource-group-name> --name <cluster-name> ```
-</br>
 (This command merges your AKS cluster credentials into your local kubeconfig file)
 
 2. Verify your context with:
